@@ -6,8 +6,8 @@ secrets = File.read( File.expand_path "~/.bitstamp" ).strip
 user, key, secret = secrets.split "|"
 
 BITSTAMP_USERNAME   = user
-BITSTAMP_API_KEY    = secret
-BITSTAMP_API_SECRET = key
+BITSTAMP_API_KEY    = key
+BITSTAMP_API_SECRET = secret
 
 class BitstampBot
 
@@ -18,9 +18,9 @@ class BitstampBot
 
   def config
     Bitstamp.setup do |config|
+      config.client_id  = BITSTAMP_USERNAME
       config.key        = BITSTAMP_API_KEY
       config.secret     = BITSTAMP_API_SECRET
-      config.client_id  = BITSTAMP_USERNAME
     end
   end
 
@@ -105,7 +105,11 @@ btb = BitstampBot.new
 #p btb.ticker
 #p btb.run
 
-p Bitstamp.orders.all.first.amount
+p Bitstamp.orders.all.size
+
+Bitstamp.orders.buy amount: 0.01, price: 901
+
+p Bitstamp.orders.all.size
 #p Bitstamp.user_transactions.all
 
 # time ruby lib/bitstamp_bot.rb
