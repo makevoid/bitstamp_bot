@@ -37,8 +37,8 @@ class BitstampBot
   # GOOD_MAX = 666
   # BEST_MAX = 672
 
-  GOOD_MIN = 625
-  GOOD_MAX = 635
+  GOOD_MIN = 610
+  GOOD_MAX = 620
 
   # FIXED_AMOUNT = 0.01  # btc (= 5 usd, production)
   FIXED_AMOUNT = 0.003   # btc (= 1 usd, testing   )
@@ -53,27 +53,24 @@ class BitstampBot
   def run
     @wait = 0
     # while true
-    puts "ticker:", Bitstamp.ticker.inspect
-
-    1000.times do
+    1.times do
       reserves = get_reserves
-      # TODO: don't fetch reserves everytime
 
+
+      # p Bitstamp.ticker
       # exit
 
       # buy_reserve  = 0.1 # btc - btc_available
       # sell_reserve = 67  # usd - usd_available
 
       next unless @wait <= 0
-      p buying_is_good
-      exit
-      if    reserves[:buy]  > FIXED_AMOUNT# && buying_is_good
-        buy
-      elsif reserves[:sell] > FIXED_AMOUNT# && selling_is_good
-        sell
+      if    reserves[:buy]  > FIXED_AMOUNT && amount = buying_is_good
+        buy  amount
+      elsif reserves[:sell] > FIXED_AMOUNT && amount = selling_is_good
+        sell amount
       end
 
-      sleep 3 # normal wait
+      sleep 1 # normal wait
       @wait -= 1
     end
 
@@ -83,7 +80,7 @@ class BitstampBot
 
   def get_reserves
     balance = Bitstamp.balance
-    buy = balance["usd_available"].to_f / value
+    buy = balance["usd_available"].to_f / ask
     {
       buy:      buy,
       sell:     balance["btc_available"].to_f,
@@ -100,7 +97,7 @@ class BitstampBot
   end
 
   def value
-    Bitstamp.ticker.last.to_f # TODO: get more historic/stable value also
+    Bitstamp.ticker.last.to_f
   end
 
   def buying_is_good
@@ -111,26 +108,18 @@ class BitstampBot
     value > GOOD_MAX
   end
 
-  def price_buy
-    value - 2
-  end
-
-  def price_sell
-    value + 2
-  end
-
-  def buy
+  def buy(suggested)
     amount = FIXED_AMOUNT
-    puts "buying #{amount} at #{price_buy}"
-    order = Bitstamp.orders.buy amount: amount, price: price_buy
+    puts "buying #{amount}"
+    order = Bitstamp.orders.buy amount: amount, price:
     ORDER_IDS << order.id
     @wait = WAIT_TIME
   end
 
-  def sell
+  def sell(suggested)
     amount = FIXED_AMOUNT
-    puts "selling #{amount} at #{price_sell}"
-    order = Bitstamp.orders.sell amount: amount, price: price_sell
+    puts "selling #{amount}"
+    order = Bitstamp.orders.sell amount: amount, price: 500
     ORDER_IDS << order.id
     @wait = WAIT_TIME
   end
