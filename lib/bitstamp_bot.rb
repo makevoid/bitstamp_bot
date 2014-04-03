@@ -1,5 +1,7 @@
 require 'bitstamp'
 
+path = File.expand_path "../../", __FILE__
+PATH = path
 
 # format: key|secret
 secrets = File.read( File.expand_path "~/.bitstamp" ).strip
@@ -49,13 +51,37 @@ class BitstampBot
   # consider all requests made before non-bot and cancel them
   # dt = Time.now - DateTime.parse("datetime").to_time
 
+  # EMA1_GT_EMA2 = ?
+
+  def closing_price_get
+    value
+  end
+
+  require_relative "utils"
+  include Utils
+
+  def closing_price_write(price)
+    prices = json_read "closing"
+    prices << price
+    json_write "closing", prices
+  end
 
   def run
+    while true
+      price = closing_price_get
+      closing_price_write price
+      # notify ui (sse?)
+
+      sleep 20
+      #sleep 60
+    end
+
+    exit
+
     @wait = 0
     # while true
     1.times do
       reserves = get_reserves
-
 
       # p Bitstamp.ticker
       # exit
@@ -69,6 +95,8 @@ class BitstampBot
       elsif reserves[:sell] > FIXED_AMOUNT && amount = selling_is_good
         sell amount
       end
+
+      ema
 
       sleep 1 # normal wait
       @wait -= 1
