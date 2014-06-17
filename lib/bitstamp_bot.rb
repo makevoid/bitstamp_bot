@@ -83,27 +83,21 @@ class BitstampBot
     1.times do
       reserves = get_reserves
 
-      # p Bitstamp.ticker
-      # exit
-
-      # buy_reserve  = 0.1 # btc - btc_available
-      # sell_reserve = 67  # usd - usd_available
-
-      next unless @wait <= 0
-      if    reserves[:buy]  > FIXED_AMOUNT && amount = buying_is_good
-        buy  amount
-      elsif reserves[:sell] > FIXED_AMOUNT && amount = selling_is_good
-        sell amount
-      end
-
-      ema
-
+      
+      # "user" input here
+      execute_current_strategy
+      
+      
       sleep 1 # normal wait
       @wait -= 1
     end
 
     cancel_transactions
 
+  end
+  
+  def execute_current_strategy
+    
   end
 
   def get_reserves
