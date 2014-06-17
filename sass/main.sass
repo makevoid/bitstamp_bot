@@ -1,36 +1,98 @@
-$color_action: black
+// units
+
+$u: 10px
+$u2: $u * 2
+$u3: $u * 3
+$u5: $u * 5
+$u7: $u * 7
+
+$lh: 180%
+
+// colors
+
+$color_main:    green
+$color_action:  lightGreen
+$color_white:   white
+
+// reset
 
 *
   box-sizing: border-box
 
+a
+  text-decoration: none
+  color: $color_main
+
+p, h1
+  line-height: $lh
+  margin: 0
+
+
 body
   padding: 0
 
+// utils
+
+.clear
+  clear: both
+
+// layout
+
 .content
-  width: 95%
-  margin: 30px auto 0
+  width: 100%
+  margin: $u3 auto $u5
+
+section
+  display: inline-block
+
+section.half
+  width: 46%
+
+section.border
+  border: 1px solid #AAA
+  padding: 1%
+  margin: 0 1% 0%
+
+.btn, .button
+  padding: 1%
+
+nav a
+  font-weight: bold
+  display: inline-block
+  @extend .button
+
+// buttons
+
+.btn, .button
+  border-radius: 7px
+  background: $color_action
+  border: 1px solid $color_action
+  &:hover
+    border: 1px solid $color_main
+
+.current
+  background: $color_main
+  color: $color_white
+
+// forms
+
+input
+  margin-bottom: $u
+input[type=submit]
+  @extend .button
+
+// main style
 
 h1
-  font-size: 1em
+  font-size: 1.3em
 
 .graph
   height: 400px
+  margin-bottom: $u2
 
 .break
   display: block
 
-p
-  line-height: 180%
-  margin: 0
-
-input
-  margin-bottom: 10px
-input[type=submit]
-  background: $color_action
-
-section
-  margin-bottom: 20px
-  border: 1px solid #AAA
-  padding: 1%
-  display: inline-block
-  width: 48%
+.buy_sell section
+  @extend .half
+  @extend .border

@@ -17,11 +17,18 @@ class Grapher < Sinatra::Base
 
   helpers do
     def body_class
-      request.path.split("/")[1]
+      request.path.split("/")[1] || ""
     end
 
     def submit(label)
       haml_tag :input, value: label, type: "submit"
+    end
+
+    def nav_link(url, label)
+      css_class = "current" if body_class == url[1..-1]
+      haml_tag :a, href: url, class: css_class do
+        haml_concat label
+      end
     end
   end
 
@@ -44,11 +51,12 @@ class Grapher < Sinatra::Base
     haml :buy_sell
   end
 
-  get "/graph"  do
-    # DATA = json_read "closing"
-    # @data = DATA[-200..-1]
-    # @labels = Array.new(@data.size).map{ "" }
-    haml :graph
+  get "/orders_transactions"  do
+    haml :orders_transactions
+  end
+
+  get "/more"  do
+    haml :more
   end
 
   get "/values.csv" do

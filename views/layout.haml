@@ -1,14 +1,17 @@
+:ruby
+  title = "Bitstamp Enhancer"
 !!!
 %html
   %head
-    %title BitStamp Bot - Grapher
+    %title= title
     %link{ rel: "stylesheet", href: "/css/main.css" }
   %body{ class: body_class }
-    %h1 BitStamp Bot - Grapher
+    %h1= title
     %nav
-      %a{ href: "/" }         Overview
-      %a{ href: "/graph" }    Graph
-      %a{ href: "/buy_sell" } Buy/Sell
+      - nav_link "/",          "Overview"
+      - nav_link "/buy_sell",  "Buy/Sell"
+      - nav_link "/orders",    "Orders"
+      /%a{ href: "/more" }     More
     .content
       = yield
 

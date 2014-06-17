@@ -37,16 +37,32 @@ main = ->
       rollPeriod: 3,  # smoothed a bit
       #rollPeriod: 7,
       showRoller: true,
+      drawYGrid: false,
+      # interactionModel: {
+      #   mousedown: dyg_mousedown
+      # }
+      # legend: 'always',
+      ylabel: "Price (USD)"
     }
   )
 
-  # chart.js
-  #
-  # ctx = document.querySelector("canvas").getContext "2d"
-  # chart  = new Chart(ctx).Line c_data       #, options
+dyg_mousedown = (event, g, context) ->
 
-  # setTimeout ->
-  #   window.location = "/graph"
-  # , 20000
 
 window.onload = main
+
+
+
+# old
+
+# canvasx = Dygraph.pageX(event) - Dygraph.findPosX(g.graphDiv);
+# canvasy
+
+# chart.js
+#
+# ctx = document.querySelector("canvas").getContext "2d"
+# chart  = new Chart(ctx).Line c_data       #, options
+
+# setTimeout ->
+#   window.location = "/graph"
+# , 20000

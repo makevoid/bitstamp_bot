@@ -3,10 +3,11 @@
   buy = mhash( available: "available", amount: "amount", price: "price", total: "total" )
   sell = mhash( available: "available", amount: "amount", price: "price", total: "total" )
 
-.graph [graph]
+.graph
+.clear
 
 %section
-  %p BUY
+  %h1 BUY
   %p Available USD: $#{buy.available}
   %input{ placeholder: "amount (#{buy.amount})" } BTC
   %input{ placeholder: "price  ($#{buy.price})" } $
@@ -14,7 +15,7 @@
   - submit "Buy BTC"
 
 %section
-  %p SELL
+  %h1 SELL
   %p Available BTC: #{sell.available} BTC
   %input{ placeholder: "amount (#{sell.amount})" } BTC
   %input{ placeholder: "price  (#{sell.price})" } $
