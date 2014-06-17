@@ -1,0 +1,23 @@
+:ruby
+  extend Mhash
+  buy = mhash( available: "available", amount: "amount", price: "price", total: "total" )
+  sell = mhash( available: "available", amount: "amount", price: "price", total: "total" )
+
+.graph [graph]
+
+%section
+  %p BUY
+  %p Available USD: $#{buy.available}
+  %input{ placeholder: "amount (#{buy.amount})" } BTC
+  %input{ placeholder: "price  ($#{buy.price})" } $
+  %p Total: #{buy.total}
+  - submit "Buy BTC"
+
+%section
+  %p SELL
+  %p Available BTC: #{sell.available} BTC
+  %input{ placeholder: "amount (#{sell.amount})" } BTC
+  %input{ placeholder: "price  (#{sell.price})" } $
+  %p Total: #{sell.total}
+  - submit "Sell BTC"
+
