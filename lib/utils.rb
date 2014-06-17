@@ -12,3 +12,11 @@ module Utils
   end
 
 end
+
+# monkeypatches
+
+class Array
+  def map_round
+    map{ |elem| elem.round(3) }
+  end
+end

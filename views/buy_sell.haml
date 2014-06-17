@@ -1,0 +1,21 @@
+:ruby
+  buy = to_mhash {}
+  buy.available
+  btc_available = "available_btc"
+  amount = 0.01
+
+
+graph
+
+
+BUY
+Available USD: $#{available_btc}
+%input{ placeholder: "amount (#{amount})" } BTC
+%input{ placeholder: "price  (price)" } $
+Total:
+
+SELL
+Available BTC: available_btc BTC
+%input{ placeholder: "amount (0.01)" } BTC
+%input{ placeholder: "price  (price)" } $
+Total:

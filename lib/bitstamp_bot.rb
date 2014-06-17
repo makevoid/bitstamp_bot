@@ -11,6 +11,10 @@ BITSTAMP_USERNAME   = user
 BITSTAMP_API_KEY    = key
 BITSTAMP_API_SECRET = secret
 
+
+class PriceGetFail < StandardError
+end
+
 class BitstampBot
 
   def initialize
@@ -53,8 +57,22 @@ class BitstampBot
 
   # EMA1_GT_EMA2 = ?
 
+  def backup_history
+    backup = json_read "closing"
+    json_write "closing_backup", backup
+  end
+
+  def delete_history
+    backup_history
+    json_write "closing", []
+  end
+
   def closing_price_get
     value
+
+    rescue Curl::Err::ConnectionFailedError
+    puts "failed to get price"
+    PriceGetFail
   end
 
   require_relative "utils"
@@ -63,14 +81,20 @@ class BitstampBot
   def closing_price_write(price)
     prices = json_read "closing"
     prices << price
+    puts "got current price: #{price}"
     json_write "closing", prices
   end
 
   def run
+
+    delete_history
+
     while true
       price = closing_price_get
-      closing_price_write price
-      # notify ui (sse?)
+      unless price == PriceGetFail
+        closing_price_write price
+        # notify ui (sse?)
+      end
 
       sleep 20
       #sleep 60

@@ -1,0 +1,14 @@
+-# %canvas{ width: "1400px", height: "300px" }
+.graph
+
+%a{ href: "/values.csv" } values (csv)
+
+-#:ruby
+-# :javascript
+-#   var data      = #{@data}
+-#   var data_ma9  = #{data_ma9}
+-#   var data_ma19 = #{data_ma19}
+-#   var labels    = #{@labels}
+-# -#%script{ src: "/js/vendor/chart.js" }
+%script{ src: "/js/vendor/dygraphs.js" }
+%script{ src: "/js/app.js" }

@@ -1,24 +1,13 @@
-var data, main;
-
-data = {
-  labels: data,
-  datasets: [
-    {
-      fillColor: "rgba(220,220,220,0.5)",
-      strokeColor: "rgba(220,220,220,1)",
-      pointColor: "rgba(220,220,220,1)",
-      pointStrokeColor: "#fff",
-      data: data
-    }
-  ]
-};
+var main;
 
 main = function() {
-  var chart, ctx;
-  ctx = document.querySelector("canvas").getContext("2d");
-  chart = new Chart(ctx).Line(data);
+  var g;
+  g = new Dygraph(document.querySelector(".graph"), "values.csv", {
+    rollPeriod: 3,
+    showRoller: true
+  });
   return setTimeout(function() {
-    return window.location = "/";
+    return window.location = "/graph";
   }, 20000);
 };
 
