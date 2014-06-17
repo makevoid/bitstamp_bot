@@ -15,6 +15,12 @@ require_relative "lib/bitstamp_api"
 
 class Grapher < Sinatra::Base
 
+  before do
+    @clock = Time.now
+    @render_time = 0
+    @api = BitstampApi.new
+  end
+
   helpers do
     def body_class
       request.path.split("/")[1] || ""

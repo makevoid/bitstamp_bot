@@ -11,6 +11,13 @@ incremental orders (place multiple orders to maximize value and minimize risk)
 This repo contains two project, a bitstamp ruby trading enhancer / helper in ruby sinatra (default bitstamp ui is not the best usable thing ever, for the average trader)
 
 
+### usage:
+
+dev
+
+    rerun -p "**/*.{rb,json}" -- rackup -p 3000
+
+
 
 ### BOT todo:
 

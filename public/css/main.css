@@ -60,3 +60,8 @@ h1 {
 
 .break {
   display: block; }
+
+.footer {
+  font-size: 80%;
+  float: right;
+  margin-top: 30px; }

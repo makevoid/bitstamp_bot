@@ -15,5 +15,9 @@
     .content
       = yield
 
+      - @render_time = Time.now - @clock
+    .footer
+      page rendered in: #{@render_time}
+
     %script{ src: "/js/vendor/dygraphs.js" }
     %script{ src: "/js/app.js" }

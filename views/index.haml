@@ -1,3 +1,23 @@
-%p Overview
+:ruby
+  extend Mhash
 
-Balance
+%h1 Balance:
+
+%p
+  Connection:
+  = @api.connection_ok ? "OK" : "Error: #{@api.connection_error}"
+
+%p ASK price: $#{@api.ask}
+
+%section
+  %h1 Balance:
+  - reserves = mhash @api.reserves_get
+
+
+  %h1 BUY:
+  %p $#{reserves.buy_usd}
+  %p #{reserves.buy} BTC
+
+
+  %h1 SELL:
+  %p #{reserves.sell} BTC

@@ -105,13 +105,13 @@ class BitstampBot
     @wait = 0
     # while true
     1.times do
-      reserves = get_reserves
+      reserves = reserves_get
 
-      
+
       # "user" input here
       execute_current_strategy
-      
-      
+
+
       sleep 1 # normal wait
       @wait -= 1
     end
@@ -119,32 +119,13 @@ class BitstampBot
     cancel_transactions
 
   end
-  
+
   def execute_current_strategy
-    
+
   end
 
-  def get_reserves
-    balance = Bitstamp.balance
-    buy = balance["usd_available"].to_f / ask
-    {
-      buy:      buy,
-      sell:     balance["btc_available"].to_f,
-      buy_usd:  balance["usd_available"].to_f,
-    }
-  end
-
-  def bid
-    Bitstamp.ticker.bid.to_f # bid do sell
-  end
-
-  def ask
-    Bitstamp.ticker.ask.to_f # ask to buy
-  end
-
-  def value
-    Bitstamp.ticker.last.to_f
-  end
+  require_relative "mixins/stampable"
+  include Stampable
 
   def buying_is_good
     value < GOOD_MIN
