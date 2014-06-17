@@ -10,9 +10,20 @@ include Utils
 
 require "moving_average"
 
+require_relative "lib/vendor/mhash"
 require_relative "lib/bitstamp_api"
 
 class Grapher < Sinatra::Base
+
+  helpers do
+    def body_class
+      request.path.split("/")[1]
+    end
+
+    def submit(label)
+      haml_tag :input, value: label, type: "submit"
+    end
+  end
 
   def simple_moving_average(size)
     nums = []

@@ -3,7 +3,7 @@
   %head
     %title BitStamp Bot - Grapher
     %link{ rel: "stylesheet", href: "/css/main.css" }
-  %body
+  %body{ class: body_class }
     %h1 BitStamp Bot - Grapher
     %nav
       %a{ href: "/" }         Overview
@@ -11,3 +11,6 @@
       %a{ href: "/buy_sell" } Buy/Sell
     .content
       = yield
+
+    %script{ src: "/js/vendor/dygraphs.js" }
+    %script{ src: "/js/app.js" }

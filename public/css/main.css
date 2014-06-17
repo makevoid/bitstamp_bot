@@ -1,3 +1,6 @@
+* {
+  box-sizing: border-box; }
+
 body {
   padding: 0; }
 
@@ -10,3 +13,23 @@ h1 {
 
 .graph {
   height: 400px; }
+
+.break {
+  display: block; }
+
+p {
+  line-height: 180%;
+  margin: 0; }
+
+input {
+  margin-bottom: 10px; }
+
+input[type=submit] {
+  background: black; }
+
+section {
+  margin-bottom: 20px;
+  border: 1px solid #aaaaaa;
+  padding: 1%;
+  display: inline-block;
+  width: 48%; }

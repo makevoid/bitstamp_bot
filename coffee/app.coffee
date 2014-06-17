@@ -47,8 +47,8 @@ main = ->
   # ctx = document.querySelector("canvas").getContext "2d"
   # chart  = new Chart(ctx).Line c_data       #, options
 
-  setTimeout ->
-    window.location = "/graph"
-  , 20000
+  # setTimeout ->
+  #   window.location = "/graph"
+  # , 20000
 
 window.onload = main
