@@ -51,8 +51,8 @@ class Grapher < Sinatra::Base
     haml :buy_sell
   end
 
-  get "/orders_transactions"  do
-    haml :orders_transactions
+  get "/orders"  do
+    haml :orders
   end
 
   get "/more"  do
