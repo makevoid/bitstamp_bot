@@ -1,17 +1,9 @@
+path = File.expand_path "../", __FILE__
+
 require 'sinatra'
 require 'haml'
-require 'json'
 
-path = File.expand_path "../", __FILE__
-PATH = path
-
-require "#{PATH}/lib/utils"
-include Utils
-
-require "moving_average"
-
-require_relative "lib/vendor/mhash"
-require_relative "lib/bitstamp_api"
+require "#{path}/config/env"
 
 class Grapher < Sinatra::Base
 
