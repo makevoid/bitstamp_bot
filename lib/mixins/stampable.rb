@@ -3,7 +3,6 @@ module Stampable
   def connection_ok
     balance_get
     @test_call = @@balance
-    raise @@balance.inspect
     @test_call["error"].nil?
   end
 
