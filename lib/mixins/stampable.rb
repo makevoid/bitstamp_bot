@@ -16,6 +16,7 @@ module Stampable
 
   @@balance = nil
   @@ask = nil
+  @@orders_open = nil
 
   THROTTLE_TIME = 10
 
@@ -65,9 +66,16 @@ module Stampable
     orders.sort_by{ |order| order.price }.reverse
   end
 
+  def orders_open_cached
+    if !@@orders_open || @@orders_open[:time] < (Time.now - THROTTLE_TIME)
+      @@orders_open = { open: orders_open, time: Time.now }
+    end
+    @@orders_open
+  end
+
   def orders_closed
     # note: this is ok because it has to be kept all the time
-    @orders_closed ||= Bitstamp.user_transactions.all
+    @@orders_closed ||= Bitstamp.user_transactions.all
   end
 
 end

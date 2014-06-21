@@ -8,4 +8,5 @@ require "#{PATH}/lib/mixins/utils"
 include Utils
 
 require "#{path}/lib/vendor/mhash"
+include Mhash
 require "#{path}/lib/bitstamp_api"

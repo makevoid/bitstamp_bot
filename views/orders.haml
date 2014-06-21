@@ -1,14 +1,74 @@
 :ruby
-  orders_open = @api.orders_open
+
+  def sym_keys(hash)
+    hash_new = {}
+    hash.each do |key, value|
+      hash_new[key.to_sym] = value
+    end
+    hash_new
+  end
+
+
+  orders_open = @api.orders_open_cached[:open]
+
+  orders_open = orders_open.map do |order|
+    order = mhash sym_keys JSON.parse order.to_json
+    order[:action] = order.type == 0 ? :buy : :sell
+    order = mhash order
+  end
+  orders_open_buy  = orders_open.select{ |o| o.action == :buy  }
+  orders_open_sell = orders_open.select{ |o| o.action == :sell }
+
   orders_closed = @api.orders_closed # transactions
 
-%h1 Orders
-
-- for order in orders_open
-  = order.to_json
 
 
-%h1 Transactions
+%section
+  %h1 Open Orders
 
-- for order in orders_closed
-  = order.to_json
+  :ruby
+    def order_view(order)
+      "#{order.price}$ @ #{order.datetime}"
+    end
+
+  .buy
+    %h1 BUY
+    = "No buy orders in the order book. Add one" if orders_open_buy == []
+    - for order in orders_open_buy
+      %p= order_view order
+
+  .sell
+    %h1 SELL
+    = "No sell orders in the order book. Add one" if orders_open_buy == []
+    - for order in orders_open_sell
+      %p= order_view order
+
+
+
+
+%section.orders_closed
+  %h1
+    Closed Orders
+    %span Transactions
+
+  /
+    .buy
+      %h1 BUY
+
+    .sell
+      %h1 SELL
+
+  - for order in orders_closed
+    - order = mhash sym_keys JSON.parse order.to_json
+    - next if order.type != 2
+    - total = order.usd
+    - order.btc =  "%.3f" % order.btc.to_f
+    - usd_or_btc = order.usd.to_i > 0 ? "$#{order.usd}" : "#{order.btc} BTC"
+
+
+    %p
+      %span #{usd_or_btc}
+      @ (fee #{order.fee}%)
+      [#{total}] @ #{order.datetime}
+
+

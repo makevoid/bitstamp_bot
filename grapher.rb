@@ -57,6 +57,10 @@ class Grapher < Sinatra::Base
     haml :more
   end
 
+  get "/api_key"  do
+    haml :more
+  end
+
   get "/values.csv" do
     DATA = json_read "closing"
     data = DATA[0..-1]

@@ -22,6 +22,10 @@ get "/backtest" do
   haml :backtest
 end
 
+get "/settings" do
+  haml :settings
+end
+
 
 # helpers
 
