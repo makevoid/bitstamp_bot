@@ -75,7 +75,7 @@ class BitstampBot
     PriceGetFail
   end
 
-  require_relative "utils"
+  require_relative "mixins/utils"
   include Utils
 
   def closing_price_write(price)

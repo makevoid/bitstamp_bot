@@ -53,7 +53,21 @@ module Stampable
   end
 
   def value
-    @value ||= Bitstamp.ticker.last.to_f
+    # note to myself: use this kind of code only in controllers, not in models/libs
+    #@value ||= Bitstamp.ticker.last.to_f
+    Bitstamp.ticker.last.to_f
+  end
+
+  # orders & transactions (open and closed orders)
+
+  def orders_open
+    orders = Bitstamp.orders.all
+    orders.sort_by{ |order| order.price }.reverse
+  end
+
+  def orders_closed
+    # note: this is ok because it has to be kept all the time
+    @orders_closed ||= Bitstamp.user_transactions.all
   end
 
 end

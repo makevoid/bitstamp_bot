@@ -4,7 +4,7 @@ PATH = path
 require 'json'
 require "moving_average"
 
-require "#{PATH}/lib/utils"
+require "#{PATH}/lib/mixins/utils"
 include Utils
 
 require "#{path}/lib/vendor/mhash"

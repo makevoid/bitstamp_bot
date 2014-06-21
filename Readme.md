@@ -34,3 +34,8 @@ dev
 ### ios app (rubymotion)
 
 
+
+
+### notes
+
+swing trading blogpost: http://altcoinnewsletter.com/swing-trading-with-bitcoin/

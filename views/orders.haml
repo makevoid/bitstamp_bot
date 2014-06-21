@@ -1,0 +1,14 @@
+:ruby
+  orders_open = @api.orders_open
+  orders_closed = @api.orders_closed # transactions
+
+%h1 Orders
+
+- for order in orders_open
+  = order.to_json
+
+
+%h1 Transactions
+
+- for order in orders_closed
+  = order.to_json
