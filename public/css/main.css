@@ -57,8 +57,14 @@ nav a {
 input {
   margin-bottom: 10px; }
 
+label {
+  display: block; }
+
 h1 {
-  font-size: 1.3em; }
+  font-size: 130%; }
+  h1 span {
+    font-size: 90%;
+    font-weight: normal; }
 
 .graph {
   height: 400px;
@@ -72,7 +78,9 @@ h1 {
   float: right;
   margin-top: 30px; }
 
+.orders div p span {
+  font-size: 120%; }
 .orders .orders_closed p span {
-  width: 70px;
+  width: 140px;
   text-align: right;
   display: inline-block; }

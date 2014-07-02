@@ -8,6 +8,10 @@
     hash_new
   end
 
+  def date_f(date)
+    DateTime.parse(date).strftime "%d/%m/%Y - %H:%M"
+  end
+
 
   orders_open = @api.orders_open_cached[:open]
 
@@ -19,29 +23,44 @@
   orders_open_buy  = orders_open.select{ |o| o.action == :buy  }
   orders_open_sell = orders_open.select{ |o| o.action == :sell }
 
+  orders_open_buy_sum  = orders_open_buy.map{ |o| o.amount.to_f }.inject(:+)
+  orders_open_sell_sum = orders_open_sell.map{ |o| o.amount.to_f }.inject(:+)
+
   orders_closed = @api.orders_closed # transactions
 
 
 
-%section
+%section.orders_open
   %h1 Open Orders
 
   :ruby
     def order_view(order)
-      "#{order.price}$ @ #{order.datetime}"
+      "#{order.price}$ [#{order.amount}] @ #{date_f order.datetime}"
+    end
+    def order_partial(order)
+      haml_tag :span do
+        haml_concat "#{order.price}$"
+      end
+      haml_concat "[#{order.amount}] @ #{date_f order.datetime}"
     end
 
   .buy
-    %h1 BUY
+    %h1
+      BUY
+      %span (#{"%.2f" % orders_open_buy_sum} BTC)
     = "No buy orders in the order book. Add one" if orders_open_buy == []
     - for order in orders_open_buy
-      %p= order_view order
+      %p
+        - order_partial order
 
   .sell
-    %h1 SELL
+    %h1
+      SELL
+      %span (#{"%.2f" % orders_open_sell_sum} BTC)
     = "No sell orders in the order book. Add one" if orders_open_buy == []
     - for order in orders_open_sell
-      %p= order_view order
+      %p
+        - order_partial order
 
 
 
@@ -49,7 +68,7 @@
 %section.orders_closed
   %h1
     Closed Orders
-    %span Transactions
+    %span (#{orders_closed.count} transactions)
 
   /
     .buy
@@ -58,17 +77,26 @@
     .sell
       %h1 SELL
 
+  :ruby
+    traded = orders_closed.map{ |oc| oc.usd.to_f.abs }.inject(:+)
+    earned = orders_closed.map{ |oc| oc.usd.to_f }.inject(:+)
+    deposit = orders_closed.select{ |t| t.type == 0 }.map(&:usd).map(&:to_f).inject(:+)
+    withdrawn = orders_closed.select{ |t| t.type == 1 }.map(&:btc).map(&:to_f).inject(:+)
+  %p total traded: $#{traded.to_i}
+  %p total earned?: $#{earned.to_i}
+  %p total deposit: $#{deposit.to_i}
+  %p total withdrawn: #{withdrawn.abs} BTC (@ ~ / @ $600 : $#{(withdrawn.abs*600).to_i} )
+
   - for order in orders_closed
     - order = mhash sym_keys JSON.parse order.to_json
     - next if order.type != 2
-    - total = order.usd
     - order.btc =  "%.3f" % order.btc.to_f
-    - usd_or_btc = order.usd.to_i > 0 ? "$#{order.usd}" : "#{order.btc} BTC"
+    - usd_or_btc = order.usd.to_i > 0 ? "$#{order.usd} [SELL]" : "#{order.btc} BTC &nbsp;[BUY]"
 
 
     %p
       %span #{usd_or_btc}
-      @ (fee #{order.fee}%)
-      [#{total}] @ #{order.datetime}
+      @ $#{order.btc_usd} (fee #{order.fee}%)
+      [$#{order.usd}] @ #{order.datetime}
 
 

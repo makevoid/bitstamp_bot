@@ -7,6 +7,8 @@ require "#{path}/config/env"
 
 class Grapher < Sinatra::Base
 
+  use Rack::MethodOverride
+
   before do
     @clock = Time.now
     @render_time = 0
@@ -57,17 +59,28 @@ class Grapher < Sinatra::Base
     haml :more
   end
 
-  get "/api_key"  do
-    haml :more
+  get "/settings" do
+    haml :settings
   end
 
   get "/values.csv" do
     DATA = json_read "closing"
     data = DATA[0..-1]
-    # ma9  = simple_moving_average( 9)
-    # ma19 = simple_moving_average(19)
-    ma9  = simple_moving_average(20)
-    ma19 = simple_moving_average(45)
+
+
+    data = data.select.with_index do |d, idx|
+      frame = 60
+      # 12 == minute
+      # 36 == 3 mins
+      # 60 == 5 min
+      # 120 == 10 min
+      idx % frame == 0
+    end
+
+    ma9  = simple_moving_average( 9)
+    ma19 = simple_moving_average(19)
+    # ma9  = simple_moving_average(20)
+    # ma19 = simple_moving_average(45)
     data_ma9  = data.map{ |d| ma9.call   d }.map_round
     data_ma19 = data.map{ |d| ma19.call  d }.map_round
 

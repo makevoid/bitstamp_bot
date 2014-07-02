@@ -5,6 +5,11 @@ require 'json'
 path = File.expand_path "../", __FILE__
 PATH = path
 
+
+# class BistampBot < Sinatra::Base
+
+use Rack::MethodOverride
+
 require "#{PATH}/lib/utils"
 include Utils
 

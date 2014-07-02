@@ -12,12 +12,28 @@ BITSTAMP_API_KEY    = key
 BITSTAMP_API_SECRET = secret
 
 
+####
+
+# usage:
+#
+#     ruby lib/bitstamp_bot.rb
+
+
+# confs (TODO: put in a seprarate file)
+
+DELETE_HISTORY_AT_STARTUP = true
+
+####
+
+
+
 class PriceGetFail < StandardError
 end
 
 class BitstampBot
 
   def initialize
+    setup
     config
     true
   end
@@ -59,7 +75,7 @@ class BitstampBot
 
   def backup_history
     backup = json_read "closing"
-    json_write "closing_backup", backup
+    json_write "closing_backup", backup unless backup == {}
   end
 
   def delete_history
@@ -85,12 +101,23 @@ class BitstampBot
     json_write "closing", prices
   end
 
+  def log_network_error_message
+    puts "Network Error: Experienced a network error with bitstamp server"
+  end
+
   def run
 
-    delete_history
+    delete_history if DELETE_HISTORY_AT_STARTUP
 
     while true
-      price = closing_price_get
+      price = begin
+        closing_price_get
+      rescue Curl::Err::HostResolutionError
+        log_network_error_message
+      end
+
+      next unless price
+
       unless price == PriceGetFail
         closing_price_write price
         # notify ui (sse?)
@@ -168,6 +195,15 @@ class BitstampBot
     for order in all_orders
       order.cancel! if order.amount.to_f == FIXED_AMOUNT
     end
+  end
+
+  def setup
+    create_json_files
+  end
+
+  def create_json_files
+    json_create "closing"
+    json_create "closing_backup"
   end
 
 

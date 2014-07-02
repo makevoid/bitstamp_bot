@@ -4,6 +4,11 @@ Bitstamp swing trader bot with different strategies like: scalp, buy & hold, fol
 
 incremental orders (place multiple orders to maximize value and minimize risk)
 
+### usage:
+
+dev
+
+    ruby lib/bitstamp_bot.rb
 
 # Bitstamp enhancer
 

@@ -75,7 +75,7 @@ module Stampable
 
   def orders_closed
     # note: this is ok because it has to be kept all the time
-    @@orders_closed ||= Bitstamp.user_transactions.all
+    @@orders_closed ||= Bitstamp.user_transactions.all(limit: 1000000)
   end
 
 end

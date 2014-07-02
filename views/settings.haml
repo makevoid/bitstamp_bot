@@ -1,8 +1,24 @@
-API KEY
+%label
+  API KEY
+  %input{ type: "text" }
 
-%input !@#ASDA!@#!@#
+%label
+  Language
+  %select
+    %option English
+    %option Italian
+
+
+%label
+  Date Format
+  %select
+    %option day/month/year
+    %option month/day/year
 
 %p infos: how to set api key in bitstamp
+%p you can find your api key here: https://www.bitstamp.net/account/security/api/
 
 
 %p security notes: use ip filtering, don't add widthdraw and other access policies to this app just the top ones (buy, sell, list, cancel transactions etc..)
+
+%p other links: https://www.bitstamp.net/api/
